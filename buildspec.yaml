@@ -1,39 +1,51 @@
 version: 0.2
-
 phases:
   pre_build:
     commands:
-      - echo Running Gradle build...
-      - gradle build
+      - echo Logging into Docker Hub...
+      - DOCKER_PASSWORD=Tms@12345
+      - DOCKER_USERNAME=sowmyatm
+      - echo "$DOCKER_PASSWORD" | docker login --username "$DOCKER_USERNAME" --password-stdin
       - echo Logging in to Amazon ECR...
-      - aws --version
-      - REPOSITORY_URI=050451371626.dkr.ecr.us-east-1.amazonaws.com/account-ms
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $REPOSITORY_URI
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
+      - AWS_REGION=us-east-1
+      - AWS_ACCOUNT_ID=140023374329
+      - echo accountID- $AWS_ACCOUNT_ID
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
+      - echo Granting execution permissions to Gradle wrapper...
+      - chmod +x ./gradlew
+      - echo Cleaning up previous builds...
+      - ./gradlew clean
+
   build:
     commands:
-      - echo Build started on `date`
+      - echo Building the application with Gradle...
+      - ./gradlew build
       - echo Building the Docker image...
-      - docker build -t $REPOSITORY_URI:latest .
-      - docker tag $REPOSITORY_URI:latest $REPOSITORY_URI:$IMAGE_TAG
+      - IMAGE_REPO_NAME=accounts-ms
+      - IMAGE_TAG=latest
+      - echo img-repo-name $IMAGE_REPO_NAME
+      - echo img-tag $IMAGE_TAG
+      - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
+
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push $REPOSITORY_URI:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - echo Tagging the Docker image...
+      - echo post-build img-repo $IMAGE_REPO_NAME
+      - echo post-build accID $AWS_ACCOUNT_ID and region $AWS_REGION
+      - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
+      - echo Pushing the Docker image to AWS ECR...
+      - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"course-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - REPOSITORY_URI=050451371626.dkr.ecr.us-east-1.amazonaws.com/accounts-ms
+      - printf '[{"name":"account-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo Writing image definitions file...
-      # add your container name
-      - DOCKER_CONTAINER_NAME=account-ms
+      - # add your container name
+      - DOCKER_CONTAINER_NAME=accounts-ms
       - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
-      - echo $DOCKER_CONTAINER_NAME
-      - echo printing imagedefinitions.json
-      - cat imagedefinitions.json
+      - echo Build process completed successfully.
 
 artifacts:
   files:
-    - imagedefinitions.json
     - build/libs/*.jar
+    - imagedefinitions.json
+  discard-paths: yes
