@@ -37,11 +37,7 @@ bootJar {
 
 
 dependencies {
-//	implementation 'com.fasterxml.jackson.core:jackson-core:2.18.1'
-//	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.1'
-//	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.1'
-	//implementation 'com.fasterxml.jackson.core:jackson-core:2.13.1'
-	//implementation 'com.fasterxml.jackson.core:jackson-core:2.12.3'
+
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
 	implementation 'mysql:mysql-connector-java:8.0.26' // Use the latest version available
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
@@ -53,6 +49,15 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
+
+configurations.all {
+	resolutionStrategy {
+		force 'com.fasterxml.jackson.core:jackson-core:2.15.2'
+		force 'com.fasterxml.jackson.core:jackson-databind:2.15.2'
+		force 'com.fasterxml.jackson.core:jackson-annotations:2.15.2'
+	}
+}
+
 
 tasks.named('test') {
 	useJUnitPlatform()
