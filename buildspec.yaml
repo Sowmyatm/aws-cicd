@@ -2,6 +2,9 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo "Killing existing Gradle daemons..."
+      - ./gradlew --stop
+      - ./gradlew --status
       - echo Logging into Docker Hub...
       - DOCKER_PASSWORD=Tms@12345
       - DOCKER_USERNAME=sowmyatm
