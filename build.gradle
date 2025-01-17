@@ -34,9 +34,14 @@ bootJar {
 }
 
 
+//implementation ('com.fasterxml.jackson.core:2.18.1') {
+//	exclude group: 'com.fasterxml.jackson.core'
+//}
 
 
 dependencies {
+	implementation 'org.springframework.boot:spring-boot-starter-json'
+
 
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.15.2'
 	implementation 'mysql:mysql-connector-java:8.0.26' // Use the latest version available
