@@ -38,7 +38,7 @@ bootJar {
 
 dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-core:2.18.2'
-	implementation 'mysql:mysql-connector-java:8.0.26' // Use the latest version available
+	//implementation 'mysql:mysql-connector-java:8.0.26' // Use the latest version available
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	compileOnly 'org.projectlombok:lombok'
