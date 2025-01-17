@@ -5,7 +5,9 @@ phases:
     commands:
       - rm -rf /root/.gradle/caches/*
       - echo "Checking internet access and downloading jackson-core dependency..."
+      - gradle clean build --refresh-dependencies
       - gradle --no-daemon dependencies --refresh-dependencies
+      - gradle clean build --stacktrace --debug --info --refresh-dependencies
 
 
       - echo Running Gradle build...
