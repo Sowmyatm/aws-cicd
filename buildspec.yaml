@@ -14,12 +14,12 @@ phases:
       - echo Granting execution permissions to Gradle wrapper...
       - chmod +x ./gradlew
       - echo Cleaning up previous builds...
-      - ./gradlew clean
+      - gradlew clean
 
   build:
     commands:
       - echo Building the application with Gradle...
-      - ./gradlew build
+      - gradlew build
       - echo Building the Docker image...
       - IMAGE_REPO_NAME=accounts-ms
       - IMAGE_TAG=latest
