@@ -55,7 +55,7 @@ phases:
       - printf '[{"name":"account-service","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo Writing image definitions file...
       - # add your container name
-      - DOCKER_CONTAINER_NAME=accounts-ms
+      - DOCKER_CONTAINER_NAME=accounts-ms-1
       - printf '[{"name":"%s","imageUri":"%s"}]' $DOCKER_CONTAINER_NAME $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
       - echo Build process completed successfully.
 
