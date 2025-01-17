@@ -2,9 +2,10 @@ package com.tekarch.AccountsMS1.models;
 
 //import jakarta.persistence.Entity;
 //import jakarta.persistence.*;
+import jakarta.persistence.*;
 import lombok.Data;
 
-import javax.persistence.*;
+//import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
