@@ -3,6 +3,11 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - rm -rf /root/.gradle/caches/*
+      - echo "Checking internet access and downloading jackson-core dependency..."
+      - gradle --no-daemon dependencies --refresh-dependencies
+
+
       - echo Running Gradle build...
       - gradle clean build
       - echo Logging in to Amazon ECR...
