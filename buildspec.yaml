@@ -12,14 +12,14 @@ phases:
       - echo accountID- $AWS_ACCOUNT_ID
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
       - echo Granting execution permissions to Gradle wrapper...
-      - chmod +x ./gradlew
+      - chmod +x gradle
       - echo Cleaning up previous builds...
-      - gradlew clean
+      - gradle clean
 
   build:
     commands:
       - echo Building the application with Gradle...
-      - gradlew build
+      - gradle build
       - echo Building the Docker image...
       - IMAGE_REPO_NAME=accounts-ms
       - IMAGE_TAG=latest
