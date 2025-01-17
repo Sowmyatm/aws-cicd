@@ -2,12 +2,10 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Stopping Gradle daemons..."
-        - ./gradlew --stop
-        - echo "Cleaning Gradle cache..."
+      - echo "Cleaning Gradle cache..."
         - rm -rf $HOME/.gradle/caches/
-        - echo "Setting memory options..."
-        - export GRADLE_OPTS="-Xmx1024m -XX:MaxPermSize=512m"
+      - echo "Java version in environment:"
+        - java -version
       - echo Logging into Docker Hub...
       - DOCKER_PASSWORD=Tms@12345
       - DOCKER_USERNAME=sowmyatm
@@ -24,8 +22,8 @@ phases:
 
   build:
     commands:
-      - echo "Starting Gradle build..."
-        - ./gradlew --no-daemon clean build --info --stacktrace
+      - echo "Starting Gradle build with no daemon..."
+        - ./gradlew clean build --no-daemon --stacktrace --info
 #      - echo Building the application with Gradle...
 #      - ./gradlew build
       - echo Building the Docker image...
@@ -57,3 +55,6 @@ artifacts:
     - build/libs/*.jar
     - imagedefinitions.json
   discard-paths: yes
+  environment:
+    computeType: BUILD_GENERAL1_LARGE
+    image: amazoncorretto:11
