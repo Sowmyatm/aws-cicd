@@ -11,3 +11,4 @@ public interface AccountServiceInterface {
     void deleteAccount(Long accountId);
     Accounts updateAccount(Accounts accounts);
 }
+
