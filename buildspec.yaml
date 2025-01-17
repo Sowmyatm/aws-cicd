@@ -2,7 +2,7 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo "Killing existing Gradle daemons..."
+      - echo "Installing dependencies..."
       - ./gradlew --stop
       - ./gradlew --status
       - echo Logging into Docker Hub...
@@ -21,8 +21,10 @@ phases:
 
   build:
     commands:
-      - echo Building the application with Gradle...
-      - ./gradlew build
+      - echo "Starting build..."
+      - ./gradlew --no-daemon clean build
+#      - echo Building the application with Gradle...
+#      - ./gradlew build
       - echo Building the Docker image...
       - IMAGE_REPO_NAME=accounts-ms
       - IMAGE_TAG=latest
