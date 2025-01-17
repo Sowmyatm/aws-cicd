@@ -33,12 +33,11 @@ bootJar {
 	archiveFileName = 'accounts.jar'
 }
 
-dependencies {
-	implementation 'com.fasterxml.jackson.core:jackson-core:2.18.2' // or a newer version
-}
+
 
 
 dependencies {
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.18.2'
 	implementation 'mysql:mysql-connector-java:8.0.26' // Use the latest version available
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
