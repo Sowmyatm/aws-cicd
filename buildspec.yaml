@@ -4,6 +4,7 @@ phases:
 
   pre_build:
     commands:
+      - chmod +x gradlew
       - gradlew clean build
       - echo "Setting up Gradle"
       - echo Logging in to Amazon ECR...
