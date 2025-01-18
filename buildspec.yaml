@@ -3,15 +3,9 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - rm -rf /root/.gradle/caches/*
-      - echo "Checking internet access and downloading jackson-core dependency..."
-      - gradle clean build --refresh-dependencies
-      - gradle --no-daemon dependencies --refresh-dependencies
-      - gradle clean build --stacktrace --debug --info --refresh-dependencies
-
 
       - echo Running Gradle build...
-      - gradle clean build
+      - ./gradle clean build
       - echo Logging in to Amazon ECR...
       - aws --version
       - REPOSITORY_URI=050451371626.dkr.ecr.us-east-1.amazonaws.com/accounts-ms
@@ -20,7 +14,6 @@ phases:
       - IMAGE_TAG=build-$(echo $CODEBUILD_BUILD_ID | awk -F":" '{print $2}')
   build:
     commands:
-      - gradlew dependencies
       - echo Build started on `date`
       - echo Building the Docker image...
       - docker build -t $REPOSITORY_URI:latest .
