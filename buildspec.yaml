@@ -4,8 +4,8 @@ phases:
   pre_build:
     commands:
 
-      - echo Running Gradle build...
-      - ./gradle clean build
+      - gradlew --stop
+      - gradlew clean build
       - echo Logging in to Amazon ECR...
       - aws --version
       - REPOSITORY_URI=050451371626.dkr.ecr.us-east-1.amazonaws.com/accounts-ms
